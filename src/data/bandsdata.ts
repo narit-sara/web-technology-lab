@@ -6,7 +6,7 @@ export const bands: Band[] = [
     name: "LYKN (ไลแคน)",
     genre: "T-Pop / Dance-Pop",
     description: "บอยกรุ๊ปแนวหน้าจากค่าย RISER MUSIC",
-    image: "/images/bands/lykn.jpg",
+    image: "/images/bands/LYKN.jpg",
     members: [
       { name: "วิลเลี่ยม", role: "Main Vocal", image: "/images/bands/william.jpg" },
       { name: "เลโก้", role: "Main Dancer / Vocal", image: "/images/bands/lego.jpg" },
@@ -33,7 +33,7 @@ export const bands: Band[] = [
     name: "FELIZZ (เฟลลิส)",
     genre: "T-Pop / Girl Group",
     description: "วงเกิร์ลกรุ๊ป 6 สาวน้องใหม่ ภายใต้สังกัด RISER MUSIC ในเครือ GMMTV",
-    image: "/images/bands/felizz.jpg",
+    image: "/images/bands/FELIZZ.jpg",
     members: [
       { name: "ชาริ (Chari)", role: "พี่ใหญ่, สายโวคอล", image: "/images/bands/chari.jpg" },
       { name: "เชลซี (Chelsea)", role: "นักร้องนำ, วิชวล, แร็ปเปอร์", image: "/images/bands/chelsea.jpg" },
