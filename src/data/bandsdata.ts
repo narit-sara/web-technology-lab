@@ -43,4 +43,5 @@ export const bands: Band[] = [
       { name: "เอแคร์ (Acare)", role: "สมาชิก", image: "/images/bands/acare.jpg" },
     ],
   },
+  
 ];

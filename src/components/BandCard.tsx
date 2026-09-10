@@ -1,73 +1,120 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import type { Band } from "@/types/band";
 
 type BandCardProps = {
   band: Band;
+  isFollowed: boolean;
+  onToggleFollow: (id: number) => void;
 };
 
-export default function BandCard({ band }: BandCardProps) {
+export default function BandCard({
+  band,
+  isFollowed,
+  onToggleFollow,
+}: BandCardProps) {
+  const [likes, setLikes] = useState(0);
+
+  // คำนวณจำนวนสมาชิกจากข้อมูลที่มีอยู่แล้ว (ไม่สร้าง State ใหม่)
+  const memberCount = band.members ? band.members.length : 0;
+
   return (
-    <article className="border border-purple-900/40 p-5 mb-6 rounded-xl shadow-lg bg-black text-white hover:border-purple-600 transition-all flex flex-col gap-5">
-      {/* ส่วนแสดงข้อมูลวง */}
-      <div className="flex flex-col md:flex-row gap-5 items-center">
+    <article className="border border-purple-900/50 bg-black/40 rounded-xl p-6 mb-6 text-white relative">
+      <div className="flex gap-6 items-start">
         {band.image && (
-          <div className="relative w-full md:w-48 h-48 flex-shrink-0 overflow-hidden rounded-lg">
+          <div className="relative w-40 h-40 rounded-lg overflow-hidden flex-shrink-0">
             <Image
               src={band.image}
               alt={band.name}
               fill
               className="object-cover"
-              sizes="(max-width: 768px) 100vw, 192px"
             />
           </div>
         )}
 
-        <div className="flex-1 w-full">
+        <div className="flex-1">
           <div className="flex justify-between items-start">
-            <h2 className="text-2xl font-bold text-purple-400">{band.name}</h2>
-            <span className="text-xs bg-red-900/60 text-red-200 px-3 py-1 rounded-full font-medium border border-red-700/50">
-              {band.genre}
-            </span>
+            <div>
+              <h2 className="text-2xl font-bold text-purple-400">{band.name}</h2>
+              {/* แสดงจำนวนสมาชิกของแต่ละวง */}
+              <p className="text-xs text-purple-300 mt-1">
+                จำนวนสมาชิก: <strong>{memberCount}</strong> คน
+              </p>
+            </div>
+            {band.genre && (
+              <span className="text-xs bg-red-950/80 text-red-400 border border-red-800 px-3 py-1 rounded-full">
+                {band.genre}
+              </span>
+            )}
           </div>
-          
+
           {band.description && (
-            <p className="mt-2 text-gray-300 text-sm">{band.description}</p>
+            <p className="text-gray-300 mt-2 text-sm">{band.description}</p>
           )}
+
+          <div className="flex items-center gap-3 mt-4">
+            <button
+              type="button"
+              onClick={() => setLikes(likes + 1)}
+              className="text-xs bg-zinc-800 hover:bg-zinc-700 text-white px-3 py-1.5 rounded-lg border border-zinc-700 transition"
+            >
+              ❤️ Like {likes}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => onToggleFollow(band.id)}
+              className={`text-xs px-4 py-1.5 rounded-lg font-medium transition ${
+                isFollowed
+                  ? "bg-red-600 hover:bg-red-700 text-white"
+                  : "bg-purple-600 hover:bg-purple-700 text-white"
+              }`}
+            >
+              {isFollowed ? "เลิกติดตาม" : "ติดตาม"}
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* ส่วนแสดงสมาชิกพร้อมรูปโปรไฟล์ */}
-      <div className="pt-4 border-t border-zinc-800">
-        <h3 className="font-semibold text-xs text-gray-400 uppercase tracking-wider mb-3">
-          สมาชิกในวง
-        </h3>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-          {band.members.map((member, index) => (
-            <div
-              key={index}
-              className="flex flex-col items-center p-3 rounded-lg bg-zinc-900 border border-purple-900/40 text-center"
-            >
-              {member.image ? (
-                <div className="relative w-16 h-16 mb-2 overflow-hidden rounded-full border-2 border-purple-500 shadow-md">
-                  <Image
-                    src={member.image}
-                    alt={member.name}
-                    fill
-                    className="object-cover object-top"
-                    sizes="64px"
-                  />
+      {band.members && band.members.length > 0 && (
+        <div className="mt-6 pt-4 border-t border-zinc-800">
+          <h3 className="text-xs font-semibold text-gray-400 mb-3">สมาชิกในวง</h3>
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+            {band.members.map((member, idx) => {
+              const isNeedsAdjustment =
+                member.name.includes("ฮง") || member.name.includes("ตุ้ย");
+
+              return (
+                <div
+                  key={member.id || idx}
+                  className="bg-zinc-900/80 border border-zinc-800/80 rounded-lg p-3 text-center flex flex-col items-center"
+                >
+                  {member.image && (
+                    <div className="relative w-20 h-20 rounded-full overflow-hidden mb-2 border-2 border-purple-500">
+                      <Image
+                        src={member.image}
+                        alt={member.name}
+                        fill
+                        className={`object-cover ${
+                          isNeedsAdjustment
+                            ? "scale-125 -translate-y-1 object-center"
+                            : "object-top"
+                        }`}
+                      />
+                    </div>
+                  )}
+                  <p className="font-semibold text-xs text-white">{member.name}</p>
+                  {member.role && (
+                    <p className="text-[10px] text-gray-400 mt-0.5">{member.role}</p>
+                  )}
                 </div>
-              ) : (
-                <div className="w-16 h-16 mb-2 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-500 text-xs border border-zinc-700">
-                  No Image
-                </div>
-              )}
-              <strong className="text-sm text-purple-200 font-medium">{member.name}</strong>
-              <span className="text-xs text-gray-400 mt-0.5">{member.role}</span>
-            </div>
-          ))}
+              );
+            })}
+          </div>
         </div>
-      </div>
+      )}
     </article>
   );
 }

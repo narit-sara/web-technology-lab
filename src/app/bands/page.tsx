@@ -1,17 +1,11 @@
-import BandCard from "@/components/BandCard";
-import { bands } from "@/data/bandsdata";
+import BandExplorer from "@/components/BandExplorer";
+import { bands } from "@/data/bandsdata"; // หรือไฟล์เก็บข้อมูลวงดนตรีที่มีอยู่
 
 export default function BandsPage() {
   return (
-    <main className="p-6 max-w-4xl mx-auto min-h-screen bg-black">
-      <h1 className="text-3xl font-extrabold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-red-500">
-        วงดนตรีที่ชอบ (Favorite Bands)
-      </h1>
-      <section className="grid gap-4">
-        {bands.map((band) => (
-          <BandCard key={band.id} band={band} />
-        ))}
-      </section>
+    <main className="p-4">
+      <h1 className="text-2xl font-bold mb-4">วงดนตรีทั้งหมด</h1>
+      <BandExplorer bands={bands} />
     </main>
   );
 }
