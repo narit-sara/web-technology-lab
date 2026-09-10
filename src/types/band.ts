@@ -1,7 +1,8 @@
 export type Member = {
+  id?: number | string;
   name: string;
   role: string;
-  image?: string; // เพิ่มฟิลด์รูปสมาชิก (เป็น optional ใส่หรือไม่ใส่ก็ได้)
+  image?: string;
 };
 
 export type Band = {
