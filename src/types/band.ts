@@ -12,4 +12,5 @@ export type Band = {
   description?: string;
   image?: string;
   members: Member[];
+  establishedYear?: number;
 };
